@@ -1,2 +1,2 @@
-# S6502
-A simple 6502 emulator and Assembler
+# S4-6502
+S4 system for the 6502
