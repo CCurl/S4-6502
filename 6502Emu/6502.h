@@ -6,3 +6,4 @@
 #define OP_RTS 0x60
 #define OP_PLA 0x68
 #define OP_NOP 0xEA
+#define OP_LDA_IM 0xA9

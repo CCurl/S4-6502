@@ -43,3 +43,7 @@
 /x64/Debug
 /6502Emu/6502Emu.vcxproj.user
 /6502Asm/6502Asm.vcxproj.user
+/6502Asm/Release
+/6502Emu/Release
+/Debug
+/Release
