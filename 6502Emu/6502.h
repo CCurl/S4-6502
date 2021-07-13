@@ -22,11 +22,11 @@
 #define IMM 1
 #define ZP  2
 #define ZPX 3
-#define ABS 5
-#define ABX 6
-#define ABY 7
-#define INX 8
-#define INY 9
+#define ABS 4
+#define ABX 5
+#define ABY 6
+#define INX 7
+#define INY 8
 
 
 #define FLAG_C (0x01)
