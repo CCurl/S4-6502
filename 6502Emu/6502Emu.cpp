@@ -2,6 +2,7 @@
 //
 
 #include <stdio.h>
+#include "6502.h"
 
 typedef unsigned char byte;
 typedef unsigned short ushort;
@@ -9,7 +10,8 @@ typedef unsigned short ushort;
 byte mem[65536];
 int cycles;
 byte sp;
-byte a, x, y, lastPage;
+byte a, x, y, p;
+byte lastPage;
 
 extern byte readByte(ushort addr);
 extern void writeByte(ushort addr, byte val);
@@ -42,8 +44,10 @@ void init() {
     sp = 0x00;
 }
 
-void push(byte val) { mem[0x0100+(--sp)] = val; }
-byte pop() { return mem[0x0100+(sp++)]; }
+#define STK 0x0100
+
+void push(byte val) { mem[STK+(--sp)] = val; }
+byte pop() { return mem[STK+(sp++)]; }
 
 ushort wordAt(ushort addr) {
     return (readByte(addr) << 8) | readByte(addr + 1);
@@ -55,19 +59,25 @@ int run(ushort pc, int maxCycles) {
     while (1) {
         byte ir = readByte(pc++);
         switch (ir) {
-        case 0x00:
+        case OP_BRK:
             break;
-        case 0x01: 
-            break;
-        case 0x20: 
+        case OP_JSR: 
             push((pc+1) & 0xFF);
             push((pc+1) >> 8);
             pc = wordAt(pc);
             break;
-        case 0x60:
-            if (sp == 0xFF) { return cycles; }
+        case OP_PHA:
+            // push(a);
+            break;
+        case OP_RTS:
+            if (sp == 0x00) { return cycles; }
             pc = (pop() << 8) | pop();
             pc++;
+            break;
+        case OP_PLA:
+            // a = pop();
+            break;
+        case OP_NOP:
             break;
         default:
             printf("-%d:%d-", pc-1, ir);
@@ -89,6 +99,6 @@ int main()
     for (ushort i = 0x600; i < 0x700; i++) {
         int x = readByte(i);
     }
-    run(0x0615, 100);
+    run(0x0615, 500);
     printf("\r\ndone. %d cycles", cycles);
 }

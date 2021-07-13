@@ -141,6 +141,9 @@
   <ItemGroup>
     <ClCompile Include="6502Emu.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="6502.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
