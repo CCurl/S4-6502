@@ -30,3 +30,16 @@
 *.exe
 *.out
 *.app
+/.vs/6502Emu/v16/ipch/AutoPCH/4d065fa772a08857
+/.vs/6502Emu/v16
+/6502Asm/Debug/6502Asm.tlog
+/6502Asm/Debug
+/6502Asm/x64/Debug/6502Asm.tlog
+/6502Asm/x64/Debug
+/.vs/S4-6502/v16
+/.vs
+/6502Emu/Debug
+/6502Emu/x64/Debug
+/x64/Debug
+/6502Emu/6502Emu.vcxproj.user
+/6502Asm/6502Asm.vcxproj.user
