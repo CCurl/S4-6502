@@ -164,6 +164,7 @@ int run(ushort pc, long maxCycles) {
     PC = pc;
     while (1) {
         byte ir = readByte(PC++);
+        printf("-%04x:%02x-", PC-1, ir);
         switch (ir) {
         case OP_BRK: 
             break;
@@ -251,5 +252,6 @@ int main()
     writeByte(h++, OP_RTS);
 
     run(0x0600, 500);
+    for (int i = 0x600; i < h; i++) { if (mem[i]) printf("\n%04x: %02x", i, mem[i]); }
     printf("\r\ndone. %d cycles", cycles);
 }
