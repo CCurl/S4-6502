@@ -159,76 +159,325 @@ void doLDY(int addrMode) {
     //syncFlags(0);
 }
 
-int run(ushort pc, long maxCycles) {
-    cycles = 0;
-    PC = pc;
-    while (1) {
-        byte ir = readByte(PC++);
-        printf("-%04x:%02x-", PC-1, ir);
-        switch (ir) {
-        case OP_BRK: 
-            break;
-        case OP_JSR: 
-            push((PC+1) & 0xFF);
-            push((PC+1) >> 8);
-            PC = wordAt(PC);
-            break;
-        case OP_RTS:
-            if (SP == 0x00) { return cycles; }
-            PC = (pop() << 8) | pop();
-            PC++;
-            break;
-        case OP_PHA: push(REG_A); break;
-        case OP_PLA: REG_A = pop(); break;
 
-        case LDA_IMM: doLDA(IMM); break;
-        case LDA_ZP:  doLDA(ZP);  break;
-        case LDA_ZPX: doLDA(ZPX); break;
-        case LDA_ABS: doLDA(ABS); break;
-        case LDA_ABX: doLDA(ABX); break;
-        case LDA_ABY: doLDA(ABY); break;
-        case LDA_INX: doLDA(INX); break;
-        case LDA_INY: doLDA(INY); break;
 
-        case LDX_IMM: doLDX(IMM); break;
-        case LDX_ZP:  doLDX(ZP);  break;
-        case LDX_ZPY: doLDX(ZPY); break;
-        case LDX_ABS: doLDX(ABS); break;
-        case LDX_ABY: doLDX(ABY); break;
+void op_BRK(int MODE) {}
+void op_ORA(int MODE) {}
+void op_ASL(int MODE) {}
+void op_PHP(int MODE) {}
+void op_BPL(int MODE) {}
+void op_CLC(int MODE) {}
+void op_JSR(int MODE) {}
+void op_AND(int MODE) {}
+void op_BIT(int MODE) {}
+void op_ROL(int MODE) {}
+void op_PLP(int MODE) {}
+void op_BMI(int MODE) {}
+void op_SEC(int MODE) {}
+void op_RTI(int MODE) {}
+void op_EOR(int MODE) {}
+void op_LSR(int MODE) {}
+void op_CLI(int MODE) {}
+void op_PHA(int MODE) {}
+void op_JMP(int MODE) {}
+void op_BVC(int MODE) {}
+void op_RTS(int MODE) {}
+void op_ADC(int MODE) {}
+void op_ROR(int MODE) {}
+void op_PLA(int MODE) {}
+void op_BVS(int MODE) {}
+void op_SEI(int MODE) {}
+void op_STA(int MODE) {}
+void op_STY(int MODE) {}
+void op_STX(int MODE) {}
+void op_DEY(int MODE) {}
+void op_TXA(int MODE) {}
+void op_BCC(int MODE) {}
+void op_TYA(int MODE) {}
+void op_TXS(int MODE) {}
+void op_LDY(int MODE) {}
+void op_LDA(int MODE) {}
+void op_LDX(int MODE) {}
+void op_TAY(int MODE) {}
+void op_TAX(int MODE) {}
+void op_BCS(int MODE) {}
+void op_CLV(int MODE) {}
+void op_TSX(int MODE) {}
+void op_CPY(int MODE) {}
+void op_CMP(int MODE) {}
+void op_DEC(int MODE) {}
+void op_INY(int MODE) {}
+void op_DEX(int MODE) {}
+void op_CLD(int MODE) {}
+void op_CPX(int MODE) {}
+void op_SBC(int MODE) {}
+void op_INC(int MODE) {}
+void op_INX(int MODE) {}
+void op_NOP(int MODE) {}
+void op_BEQ(int MODE) {}
+void op_SED(int MODE) {}
 
-        case LDY_IMM: doLDY(IMM); break;
-        case LDY_ZP:  doLDY(ZP);  break;
-        case LDY_ZPX: doLDY(ZPY); break;
-        case LDY_ABS: doLDY(ABS); break;
-        case LDY_ABX: doLDY(ABY); break;
-
-        case OP_BEQ: PC += (sys.flags.z) ? mem[PC] : 1;
-            cycles += 2;
-            break;
-        case OP_BNE: PC += (sys.flags.z == 0) ? mem[PC] : 1;
-            cycles += 2;
-            break;
-
-        case OP_JMP: PC = wordAt(PC);          cycles += 3; break;
-        case OP_JMPI: PC = wordAt(wordAt(PC)); cycles += 5; break;
-
-        case STA_ZP:  mem[mem[PC]] = REG_A;         P1; C(3); break;
-
-        case OP_TAX: REG_X = REG_A; cycles += 2; break;
-        case OP_TXA: REG_A = REG_X; cycles += 2; break;
-        case OP_TAY: REG_Y = REG_A; cycles += 2; break;
-        case OP_TYA: REG_A = REG_Y; cycles += 2; break;
-        case OP_TSX: SP = REG_X; cycles += 2; break;
-        case OP_TXS: REG_X = SP; cycles += 2; break;
-
-        case OP_NOP: break;
-        default: printf("-%d:%d-", PC-1, ir);
-            break;
-        }
-        if (maxCycles && (maxCycles <= cycles)) {
-            return cycles;
-        }
-    }
+void xxx(int ir)
+{
+    int MODE = 0;
+	switch (ir) {
+        case 0: op_BRK(MODE); break;
+        case 1: op_ORA(MODE); break;
+        //	case 2: op_cop(MODE); break;
+        //	case 3: op_ora(MODE); break;
+        //	case 4: op_Tsb(MODE); break;
+        case 5: op_ORA(MODE); break;
+        case 6: op_ASL(MODE); break;
+        //	case 7: op_ora(MODE); break;
+        case 8: op_PHP(MODE); break;
+        case 9: op_ORA(MODE); break;
+        case 10: op_ASL(MODE); break;
+        //	case 11: op_phd(MODE); break;
+        //	case 12: op_Tsb(MODE); break;
+        case 13: op_ORA(MODE); break;
+        case 14: op_ASL(MODE); break;
+        //	case 15: op_ora(MODE); break;
+        case 16: op_BPL(MODE); break;
+        case 17: op_ORA(MODE); break;
+        //	case 18: op_Ora(MODE); break;
+        //	case 19: op_ora(MODE); break;
+        //	case 20: op_Trb(MODE); break;
+        case 21: op_ORA(MODE); break;
+        case 22: op_ASL(MODE); break;
+        //	case 23: op_ora(MODE); break;
+        case 24: op_CLC(MODE); break;
+        case 25: op_ORA(MODE); break;
+        //	case 26: op_Inc(MODE); break;
+        //	case 27: op_tcs(MODE); break;
+        //	case 28: op_Trb(MODE); break;
+        case 29: op_ORA(MODE); break;
+        case 30: op_ASL(MODE); break;
+        //	case 31: op_ora(MODE); break;
+        case 32: op_JSR(MODE); break;
+        case 33: op_AND(MODE); break;
+        //	case 34: op_jsl(MODE); break;
+        //	case 35: op_and(MODE); break;
+        case 36: op_BIT(MODE); break;
+        case 37: op_AND(MODE); break;
+        case 38: op_ROL(MODE); break;
+        //	case 39: op_and(MODE); break;
+        case 40: op_PLP(MODE); break;
+        case 41: op_AND(MODE); break;
+        case 42: op_ROL(MODE); break;
+        //	case 43: op_pld(MODE); break;
+        case 44: op_BIT(MODE); break;
+        case 45: op_AND(MODE); break;
+        case 46: op_ROL(MODE); break;
+        //	case 47: op_and(MODE); break;
+        case 48: op_BMI(MODE); break;
+        case 49: op_AND(MODE); break;
+        //	case 50: op_And(MODE); break;
+        //	case 51: op_and(MODE); break;
+        //	case 52: op_Bit(MODE); break;
+        case 53: op_AND(MODE); break;
+        case 54: op_ROL(MODE); break;
+        //	case 55: op_and(MODE); break;
+        case 56: op_SEC(MODE); break;
+        case 57: op_AND(MODE); break;
+        //	case 58: op_Dec(MODE); break;
+        //	case 59: op_tsc(MODE); break;
+        //	case 60: op_Bit(MODE); break;
+        case 61: op_AND(MODE); break;
+        case 62: op_ROL(MODE); break;
+        //	case 63: op_and(MODE); break;
+        case 64: op_RTI(MODE); break;
+        case 65: op_EOR(MODE); break;
+        //	case 66: op_wdm(MODE); break;
+        //	case 67: op_eor(MODE); break;
+        //	case 68: op_mvp(MODE); break;
+        case 69: op_EOR(MODE); break;
+        case 70: op_LSR(MODE); break;
+        //	case 71: op_eor(MODE); break;
+        case 72: op_PHA(MODE); break;
+        case 73: op_EOR(MODE); break;
+        case 74: op_LSR(MODE); break;
+        //	case 75: op_phk(MODE); break;
+        case 76: op_JMP(MODE); break;
+        case 77: op_EOR(MODE); break;
+        case 78: op_LSR(MODE); break;
+        //	case 79: op_eor(MODE); break;
+        case 80: op_BVC(MODE); break;
+        case 81: op_EOR(MODE); break;
+        //case 82: op_Eor(MODE); break;
+        //	case 83: op_eor(MODE); break;
+        //	case 84: op_mvn(MODE); break;
+        case 85: op_EOR(MODE); break;
+        case 86: op_LSR(MODE); break;
+        //	case 87: op_eor(MODE); break;
+        case 88: op_CLI(MODE); break;
+        case 89: op_EOR(MODE); break;
+        //	case 90: op_Phy(MODE); break;
+        //	case 91: op_tcd(MODE); break;
+        //	case 92: op_jmp(MODE); break;
+        case 93: op_EOR(MODE); break;
+        case 94: op_LSR(MODE); break;
+        //	case 95: op_eor(MODE); break;
+        case 96: op_RTS(MODE); break;
+        case 97: op_ADC(MODE); break;
+        //	case 98: op_per(MODE); break;
+        //	case 99: op_adc(MODE); break;
+        //	case 100: op_Stz(MODE); break;
+        case 101: op_ADC(MODE); break;
+        case 102: op_ROR(MODE); break;
+        //	case 103: op_adc(MODE); break;
+        case 104: op_PLA(MODE); break;
+        case 105: op_ADC(MODE); break;
+        case 106: op_ROR(MODE); break;
+        //	case 107: op_rtl(MODE); break;
+        case 108: op_JMP(MODE); break;
+        case 109: op_ADC(MODE); break;
+        case 110: op_ROR(MODE); break;
+        //	case 111: op_adc(MODE); break;
+        case 112: op_BVS(MODE); break;
+        case 113: op_ADC(MODE); break;
+        //	case 114: op_Adc(MODE); break;
+        //	case 115: op_adc(MODE); break;
+        //	case 116: op_Stz(MODE); break;
+        case 117: op_ADC(MODE); break;
+        case 118: op_ROR(MODE); break;
+        //	case 119: op_adc(MODE); break;
+        case 120: op_SEI(MODE); break;
+        case 121: op_ADC(MODE); break;
+        //	case 122: op_Ply(MODE); break;
+        //	case 123: op_tdc(MODE); break;
+        //	case 124: op_Jmp(MODE); break;
+        case 125: op_ADC(MODE); break;
+        case 126: op_ROR(MODE); break;
+        //	case 127: op_adc(MODE); break;
+        //	case 128: op_Bra(MODE); break;
+        case 129: op_STA(MODE); break;
+        //	case 130: op_brl(MODE); break;
+        //	case 131: op_sta(MODE); break;
+        case 132: op_STY(MODE); break;
+        case 133: op_STA(MODE); break;
+        case 134: op_STX(MODE); break;
+        //	case 135: op_sta(MODE); break;
+        case 136: op_DEY(MODE); break;
+        //	case 137: op_Bit(MODE); break;
+        case 138: op_TXA(MODE); break;
+        //	case 139: op_phb(MODE); break;
+        case 140: op_STY(MODE); break;
+        case 141: op_STA(MODE); break;
+        case 142: op_STX(MODE); break;
+        //	case 143: op_sta(MODE); break;
+        case 144: op_BCC(MODE); break;
+        case 145: op_STA(MODE); break;
+        //	case 146: op_Sta(MODE); break;
+        //	case 147: op_sta(MODE); break;
+        case 148: op_STY(MODE); break;
+        case 149: op_STA(MODE); break;
+        case 150: op_STX(MODE); break;
+        //	case 151: op_sta(MODE); break;
+        case 152: op_TYA(MODE); break;
+        case 153: op_STA(MODE); break;
+        case 154: op_TXS(MODE); break;
+        //	case 155: op_txy(MODE); break;
+        //	case 156: op_Stz(MODE); break;
+        case 157: op_STA(MODE); break;
+        //	case 158: op_Stz(MODE); break;
+        //	case 159: op_sta(MODE); break;
+        case 160: op_LDY(MODE); break;
+        case 161: op_LDA(MODE); break;
+        case 162: op_LDX(MODE); break;
+        //	case 163: op_lda(MODE); break;
+        case 164: op_LDY(MODE); break;
+        case 165: op_LDA(MODE); break;
+        case 166: op_LDX(MODE); break;
+        //	case 167: op_lda(MODE); break;
+        case 168: op_TAY(MODE); break;
+        case 169: op_LDA(MODE); break;
+        case 170: op_TAX(MODE); break;
+        //	case 171: op_plb(MODE); break;
+        case 172: op_LDY(MODE); break;
+        case 173: op_LDA(MODE); break;
+        case 174: op_LDX(MODE); break;
+        //	case 175: op_lda(MODE); break;
+        case 176: op_BCS(MODE); break;
+        case 177: op_LDA(MODE); break;
+        //	case 178: op_Lda(MODE); break;
+        //	case 179: op_lda(MODE); break;
+        case 180: op_LDY(MODE); break;
+        case 181: op_LDA(MODE); break;
+        case 182: op_LDX(MODE); break;
+        //	case 183: op_lda(MODE); break;
+        case 184: op_CLV(MODE); break;
+        case 185: op_LDA(MODE); break;
+        case 186: op_TSX(MODE); break;
+        //	case 187: op_tyx(MODE); break;
+        case 188: op_LDY(MODE); break;
+        case 189: op_LDA(MODE); break;
+        case 190: op_LDX(MODE); break;
+        //	case 191: op_lda(MODE); break;
+        case 192: op_CPY(MODE); break;
+        case 193: op_CMP(MODE); break;
+        //	case 194: op_rep(MODE); break;
+        //	case 195: op_cmp(MODE); break;
+        case 196: op_CPY(MODE); break;
+        case 197: op_CMP(MODE); break;
+        case 198: op_DEC(MODE); break;
+        //	case 199: op_cmp(MODE); break;
+        case 200: op_INY(MODE); break;
+        case 201: op_CMP(MODE); break;
+        case 202: op_DEX(MODE); break;
+        //	case 203: op_wai(MODE); break;
+        case 204: op_CPY(MODE); break;
+        case 205: op_CMP(MODE); break;
+        case 206: op_DEC(MODE); break;
+        //	case 207: op_cmp(MODE); break;
+        //	case 208: op_BNE(MODE); break;
+        case 209: op_CMP(MODE); break;
+        //	case 210: op_Cmp(MODE); break;
+        //	case 211: op_cmp(MODE); break;
+        //	case 212: op_pei(MODE); break;
+        case 213: op_CMP(MODE); break;
+        case 214: op_DEC(MODE); break;
+        //	case 215: op_cmp(MODE); break;
+        case 216: op_CLD(MODE); break;
+        case 217: op_CMP(MODE); break;
+        //	case 218: op_Phx(MODE); break;
+        //	case 219: op_stp(MODE); break;
+        //	case 220: op_jml(MODE); break;
+        case 221: op_CMP(MODE); break;
+        case 222: op_DEC(MODE); break;
+        //	case 223: op_cmp(MODE); break;
+        case 224: op_CPX(MODE); break;
+        case 225: op_SBC(MODE); break;
+        //	case 226: op_sep(MODE); break;
+        //	case 227: op_sbc(MODE); break;
+        case 228: op_CPX(MODE); break;
+        case 229: op_SBC(MODE); break;
+        case 230: op_INC(MODE); break;
+        //	case 231: op_sbc(MODE); break;
+        case 232: op_INX(MODE); break;
+        case 233: op_SBC(MODE); break;
+        case 234: op_NOP(MODE); break;
+        //	case 235: op_xba(MODE); break;
+        case 236: op_CPX(MODE); break;
+        case 237: op_SBC(MODE); break;
+        case 238: op_INC(MODE); break;
+        //	case 239: op_sbc(MODE); break;
+        case 240: op_BEQ(MODE); break;
+        case 241: op_SBC(MODE); break;
+        //	case 242: op_Sbc(MODE); break;
+        //	case 243: op_sbc(MODE); break;
+        //	case 244: op_pea(MODE); break;
+        case 245: op_SBC(MODE); break;
+        case 246: op_INC(MODE); break;
+        //	case 247: op_sbc(MODE); break;
+        case 248: op_SED(MODE); break;
+        case 249: op_SBC(MODE); break;
+        //	case 250: op_Plx(MODE); break;
+        //	case 251: op_xce(MODE); break;
+        //	case 252: op_jsr(MODE); break;
+        case 253: op_SBC(MODE); break;
+        case 254: op_INC(MODE); break;
+        //	case 255: op_sbc(MODE); break;
+	}
 }
 
 int main()
